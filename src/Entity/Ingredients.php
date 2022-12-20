@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\IngredientsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: IngredientsRepository::class)]
 class Ingredients
 {
@@ -14,9 +16,14 @@ class Ingredients
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\Lenght(min: 2, max: 50)]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\Positive()]
+    #[Assert\lessThan(1000)]
+
+
     private ?float $quantity = null;
 
     public function getId(): ?int
