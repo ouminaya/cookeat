@@ -16,9 +16,6 @@ class Recipe
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $igredients = null;
-
     #[ORM\Column(length: '0')]
     private ?string $description = null;
 
@@ -35,18 +32,6 @@ class Recipe
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getIgredients(): ?string
-    {
-        return $this->igredients;
-    }
-
-    public function setIgredients(string $igredients): self
-    {
-        $this->igredients = $igredients;
 
         return $this;
     }
