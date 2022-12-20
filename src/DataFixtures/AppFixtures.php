@@ -6,6 +6,7 @@ use Faker\Generator;
 use App\Entity\Ingredients;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Faker\Factory;
 use Symfony\Component\Console\CommandLoader\FactoryCommandLoader;
 
 class AppFixtures extends Fixture
@@ -25,7 +26,7 @@ class AppFixtures extends Fixture
     {
         for ($i = 0; $i < 50; $i++) {
             $Ingredients = new Ingredients();
-            $Ingredients->setName('Ingredient'.$i)
+            $Ingredients->setName($this->faker->word())
                 ->setQuantity(mt_rand(1, 1000));
 
                 $manager->persist($Ingredients);
