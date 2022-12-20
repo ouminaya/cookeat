@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Ingredients;
+use App\Form\IngredientType;
 use App\Repository\IngredientsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +13,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class IngredientController extends AbstractController
 {
-    #[Route('/ingredient', name: 'app_ingredient')]
+    /**
+     *this function display all ingredients
+     * @param IngredientsRepository $repository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/ingredient', name: 'app_ingredient', methods:['GET'])]
     public function index(IngredientsRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
         $ingredients = $paginator->paginate(
@@ -20,5 +29,15 @@ class IngredientController extends AbstractController
             10
         );
         return $this->render('pages/ingredient/index.html.twig', ['ingredients' => $ingredients]);
+    }
+
+    #[Route('/ingredient/nouveau', 'ingredient.new', methods: ['GET', 'POST'])]
+    public function new(): Response
+    {
+        $ingredients = new Ingredients;
+        $form = $this->createForm(IngredientType::class, $ingredients);
+        return $this->render('pages/ingredient/new.html.twig',[
+            'form' => $form->createView()
+        ]);
     }
 }
