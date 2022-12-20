@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %} {% block title %} CookEat - Mes ingredients {%
+ endblock %} {% block body %}
+<div class="container">
+  <h1>Mes ingrédients</h1>
+  {% for ingredient in ingredients %}
+  <div>
+    <p>{{ ingredient.name }}</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
