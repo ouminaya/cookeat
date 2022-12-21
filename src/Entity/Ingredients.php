@@ -13,18 +13,16 @@ class Ingredients
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type:'integer')]
+    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type:'srting', length: 50)]
-    #[Assert\Lenght(min: 2, max: 50)]
+    #[ORM\Column]
+    #[Assert\Length(min: 2, max: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(type: ('float'))]
+    #[ORM\Column]
     #[Assert\Positive()]
-    #[Assert\lessThan(1000)]
-
-
+    #[Assert\LessThan(1000, message: 'Veuillez entrer un nombre inférieur à 1000')]
     private ?float $quantity = null;
 
     public function getId(): ?int
