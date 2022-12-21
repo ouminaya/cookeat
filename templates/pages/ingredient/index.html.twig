@@ -36,8 +36,8 @@
             <th scope="row">{{ ingredient.id}}</th>
             <td>{{ ingredient.name}}</td>
             <td>{{ ingredient.quantity}} g</td>
-            <td><a class="btn btn-success" href="{{path('ingredient.edit', { 'id': ingredient.id })}}">Editer</a></td>
-            {# {{ path('article_show', { 'slug': article.slug }) }} #}
+            <td><a class="btn btn-success" href="{{path('ingredient.edit', { 'id': ingredient.id })}}">Modifier</a></td>
+            <td><a class="btn btn-warning" href="{{path('ingredient.delete', { 'id': ingredient.id })}}">Supprimer</a></td>
 
           </tr>
         {% endfor %}
