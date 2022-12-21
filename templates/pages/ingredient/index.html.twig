@@ -27,6 +27,7 @@
         <th scope="col">Numéro</th>
         <th scope="col">Nom</th>
         <th scope="col">Quantity</th>
+        <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -35,6 +36,9 @@
             <th scope="row">{{ ingredient.id}}</th>
             <td>{{ ingredient.name}}</td>
             <td>{{ ingredient.quantity}} g</td>
+            <td><a class="btn btn-success" href="{{path('ingredient.edit', { 'id': ingredient.id })}}">Editer</a></td>
+            {# {{ path('article_show', { 'slug': article.slug }) }} #}
+
           </tr>
         {% endfor %}
     </tbody>
