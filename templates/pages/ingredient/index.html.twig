@@ -4,6 +4,17 @@
   {% if not ingredients.items is same as ([]) %}
   <h1>Mes ingrédients</h1>
 
+  <a href="{{ path('ingredient.new') }}" class="btn btn-success">
+    Créer un ingrédient
+  </a>
+
+     {# read and display just one flash message type #}
+{% for message in app.flashes('success') %}
+<div class=" alert alert-success mt-4">
+    {{ message }}
+</div>
+{% endfor %}
+
   <div class="count mt-4">
     il y a 
      {{ ingredients.getTotalItemCount}}
@@ -23,7 +34,7 @@
         <tr class="table-success">
             <th scope="row">{{ ingredient.id}}</th>
             <td>{{ ingredient.name}}</td>
-            <td>{{ ingredient.quantity}}</td>
+            <td>{{ ingredient.quantity}} g</td>
           </tr>
         {% endfor %}
     </tbody>
