@@ -4,22 +4,23 @@ namespace App\Entity;
 
 use App\Repository\IngredientsRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IngredientsRepository::class)]
+#[UniqueEntity('name')]
 class Ingredients
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type:'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(type:'srting', length: 50)]
     #[Assert\Lenght(min: 2, max: 50)]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: ('float'))]
     #[Assert\Positive()]
     #[Assert\lessThan(1000)]
 
