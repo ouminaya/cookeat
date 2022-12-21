@@ -43,18 +43,19 @@ class IngredientController extends AbstractController
         $form = $this->createForm(IngredientType::class, $ingredients);
 
         $form->handleRequest($request);
-        if($form->isSubmitted()&& $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $ingredients = $form->getData();
-
             $manager->persist($ingredients);
             $manager->flush();
 
-            $this->redirectToRoute('ingredient.index');
-
-
-        }else{
+            $this->addFlash(
+                'success',
+                'Votre ingrédients a été crée avec succès !'
+            );
+        } else {
 
         }
+
         return $this->render('pages/ingredient/new.html.twig',[
             'form' => $form->createView()
         ]);
