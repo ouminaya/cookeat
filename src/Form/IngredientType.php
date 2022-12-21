@@ -24,6 +24,9 @@ class IngredientType extends AbstractType
                 ],
                   'label' => 'Nom',
                   'label_attr' => [
+                    'class' => 'form-label mt-4'
+                  ],
+                  'constraints' => [
                     new Assert\Length(['min' => 2, 'max' => 50 ]),
                     new Assert\NotBlank()
                   ]
@@ -37,8 +40,12 @@ class IngredientType extends AbstractType
             ],
               'label' => 'Quantity',
               'label_attr' => [
+                'class' => 'form-label mt-4'
+                
+              ],
+              'constraints' => [
                 new Assert\Positive(),
-                // new Assert\lessThan(1000)
+                
               ]
                 
             ])
