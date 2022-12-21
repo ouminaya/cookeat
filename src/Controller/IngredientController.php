@@ -52,7 +52,9 @@ class IngredientController extends AbstractController
                 'success',
                 'Votre ingrédients a été crée avec succès !'
             );
-        } else {
+
+        return $this->redirectToRoute('app_ingredient');
+
 
         }
 
