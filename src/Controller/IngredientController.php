@@ -73,6 +73,7 @@ class IngredientController extends AbstractController
      * @return Response 
      */
     #[Route('/ingredient/edition/{id}', 'ingredient.edit', methods: ['GET', 'POST'])]
+    
     public function edit(
         IngredientsRepository $repository,
         int $id,
