@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\RecipeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use DateTimeImmutable;
+use App\Entity\Ingredients;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\RecipeRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[UniqueEntity('name')]
 #[ORM\HasLifecycleCallbacks]
@@ -46,7 +48,7 @@ class Recipe
 
     #[ORM\Column]
     #[Assert\NotNull(type:'datetime_immutable')]
-    private ?\DateTimeImmutable $createAt = null;
+    private ?DateTimeImmutable $createAt = null;
 
     #[ORM\Column]
     #[Assert\NotNull(type:'datetime_immutable')]
@@ -142,6 +144,18 @@ class Recipe
     public function setIsFavorite(bool $isFavorite): self
     {
         $this->isFavorite = $isFavorite;
+
+        return $this;
+    }
+
+    public function getCreateAt(): ?\DateTimeImmutable
+    {
+        return $this->createAt;
+    }
+
+    public function setCreateAt(\DateTimeImmutable $createAt): self
+    {
+        $this->createAt = $createAt;
 
         return $this;
     }
