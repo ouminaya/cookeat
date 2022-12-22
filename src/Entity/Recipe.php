@@ -6,11 +6,8 @@ use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-
-use function PHPSTORM_META\type;
 
 #[UniqueEntity('name')]
 #[ORM\HasLifecycleCallbacks]
@@ -27,7 +24,7 @@ class Recipe
     #[Assert\Length(min: 2, max: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 'text')]
+    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank()]
     private ?string $description = null;
 
@@ -55,17 +52,14 @@ class Recipe
     #[Assert\NotNull(type:'datetime_immutable')]
     private ?\DateTimeImmutable $updateAt = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $ingredients = null;
-
-    #[ORM\ManyToMany(targetEntity: ingredients::class)]
-    private Collection $relation;
+    #[ORM\ManyToMany(targetEntity: Ingredients::class)]
+    private Collection $ingredients;
 
     public function __construct()
     {
-        $this->relation = new ArrayCollection();
         $this->createAt = new \DateTimeImmutable;
         $this->updateAt = new \DateTimeImmutable;
+        $this->ingredients = new ArrayCollection();
     }
 
     #[ORM\PrePersist()]
@@ -164,38 +158,26 @@ class Recipe
         return $this;
     }
 
-    public function getIngredients(): ?string
+    /**
+     * @return Collection<int, Ingredients>
+     */
+    public function getIngredients(): Collection
     {
         return $this->ingredients;
     }
 
-    public function setIngredients(string $ingredients): self
+    public function addIngredient(Ingredients $ingredient): self
     {
-        $this->ingredients = $ingredients;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ingredients>
-     */
-    public function getRelation(): Collection
-    {
-        return $this->relation;
-    }
-
-    public function addRelation(ingredients $relation): self
-    {
-        if (!$this->relation->contains($relation)) {
-            $this->relation->add($relation);
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients->add($ingredient);
         }
 
         return $this;
     }
 
-    public function removeRelation(ingredients $relation): self
+    public function removeIngredient(Ingredients $ingredient): self
     {
-        $this->relation->removeElement($relation);
+        $this->ingredients->removeElement($ingredient);
 
         return $this;
     }
