@@ -22,7 +22,7 @@ class Ingredients
 
     #[ORM\Column]
     #[Assert\Positive()]
-    #[Assert\LessThan(1000, message: 'Veuillez entrer un nombre inférieur à 1000')]
+    #[Assert\LessThan(1000, message: 'Veuillez entre un nombre inférieur à 1000')]
     private ?float $quantity = null;
 
     public function getId(): ?int
