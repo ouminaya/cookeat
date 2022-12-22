@@ -6,7 +6,12 @@
      <a href="{{ path('recipe.new') }}" class="btn btn-success">
         Créer une recette
       </a>
-     
+        
+{% for message in app.flashes('success') %}
+<div class=" alert alert-success mt-4">
+    {{ message }}
+</div>
+{% endfor %}
    
    
      <div class="count mt-4">
@@ -22,6 +27,7 @@
            <th scope="col">Nom</th>
            <th scope="col">difficulté</th>
            <th scope="col">Date de création</th>
+           <th scope="col">Ingredients</th>
            <th scope="col">Nbr de Personnes</th>
            <th scope="col">Temps</th>
            <th scope="col">Actions</th>
@@ -34,12 +40,17 @@
                <td>{{ recipe.name }}</td>
                <td>{{ recipe.difficulty }}</td>
                <td>{{ recipe.createAt|date('d/m/Y')  }}</td>
+               <td>
+                <ul>
+                  {% for ingredient in recipe.ingredients %}
+                    <li>{{ingredient.name}}</li>
+                  {% endfor %}
+                </ul>
+               </td>
                <td>{{ recipe.nbPeople }}</td>
                <td>{{ recipe.time }} min</td>
-               <td>
-                 {# <a class="btn btn-success" href="{{path('recipe.edit', { 'id': recipe.id })}}">Modifier</a>
-                 <a class="btn btn-danger" href="{{path('recipe.delete', { 'id': recipe.id })}}">Supprimer</a> #}
-              </td>
+               <td><a class="btn btn-success" href="{{ path('recette.edit', { 'id': recipe.id }) }}">Modifier</a></td>
+              <td><a class="btn btn-danger" href="{{ path('recipe.delete', { 'id': recipe.id }) }}">Supprimer</a></td>
            </tr>
            {% endfor %}
        </tbody>
