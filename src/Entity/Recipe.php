@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[UniqueEntity('name')]
-#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 class Recipe
 {
@@ -33,7 +32,7 @@ class Recipe
     #[ORM\Column(nullable: true)]
     #[Assert\Positive()]
     #[Assert\LessThan(1441)]
-    private ?int $time = null;
+    private ?int $time;
 
     #[ORM\Column(nullable: true)]
     private ?int $nbPeople = null;
@@ -46,12 +45,12 @@ class Recipe
     #[ORM\Column]
     private ?bool $isFavorite = null;
 
-    #[ORM\Column]
-    #[Assert\NotNull(type:'datetime_immutable')]
+    #[ORM\Column(type:'datetime_immutable')]
+    #[Assert\NotNull()]
     private ?DateTimeImmutable $createAt = null;
 
-    #[ORM\Column]
-    #[Assert\NotNull(type:'datetime_immutable')]
+    #[ORM\Column(type:'datetime_immutable')]
+    #[Assert\NotNull()]
     private ?\DateTimeImmutable $updateAt = null;
 
     #[ORM\ManyToMany(targetEntity: Ingredients::class)]
