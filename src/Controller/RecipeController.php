@@ -95,7 +95,7 @@ class RecipeController extends AbstractController
 
         
         if ($form->isSubmitted() && $form->isValid()) {
-            $ingredients = $form->getData();
+            $recipe = $form->getData();
 
             $manager->persist($recipe);
             $manager->flush();
@@ -108,12 +108,18 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('recipe.index');
         }
 
-        return $this->render('pages/ingredient/edit.html.twig', [
+        return $this->render('pages/recipe/edit.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
     #[Route('/recette/suppression/{id}', 'recipe.delete', methods:['GET'])]
+    /**
+     *This controller allow us delete an recipe
+     * @param EntityManagerInterface $manager
+     * @param Recipe $recipe
+     * @return Response
+     */
     public function delete(
         EntityManagerInterface $manager,
          Recipe $recipe
