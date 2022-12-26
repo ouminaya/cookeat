@@ -56,6 +56,10 @@ class Recipe
     #[ORM\ManyToMany(targetEntity: Ingredients::class)]
     private Collection $ingredients;
 
+    #[ORM\ManyToOne(inversedBy: 'recipes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
     public function __construct()
     {
         $this->createAt = new \DateTimeImmutable;
@@ -191,6 +195,20 @@ class Recipe
     public function removeIngredient(Ingredients $ingredient): self
     {
         $this->ingredients->removeElement($ingredient);
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+   
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }
