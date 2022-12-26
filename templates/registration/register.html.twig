@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CookEat-Connextion{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <div class="container mt-5">
+        <h1 class="h3 text-center mb-5">Créer un compte</h1>
+        
+        {{ form(registrationForm) }}
+    </div>
+
+{% endblock %}
