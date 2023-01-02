@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserPasswordType;
-use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +24,11 @@ class UserController extends AbstractController
      */
 
     #[Route('/utilisateur/edition/{id}', name: 'user.edit', methods: ['GET', 'POST'])]
-    public function edit(User $user, Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
+   
+    public function edit(User $user,
+        Request $request, 
+        EntityManagerInterface $manager
+     ): Response
     { //si utilisateur n'est pas connecter renvoyer vers le formulaire de création de compte
         if (!$this->getUser()) {
             return $this->redirectToRoute('app_register');
@@ -36,7 +39,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('recipe.index');
         }
 
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserPasswordType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -56,13 +59,32 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+      /** 
+     *This controller allow us to edit user's password
+     * @param User $user
+     * @param Request $request
+     * @param UserPasswordHasherInterface $hasher
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/utilisateur/edition-mot-de-passe/{id}', 'user.edit.passeword', methods: ['GET', 'POST'])]
+
     public function editPassword(
         User $user,
         Request $request,
         UserPasswordHasherInterface $hasher,
         EntityManagerInterface $manager
     ): Response {
+
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_register');
+        }
+        //si l'utilisateur est connecter revoyer à ses recettes
+        
+        if ($this->getUser() !== $user) {
+            return $this->redirectToRoute('recipe.index');
+        }
 
         $form = $this->createForm(UserPasswordType::class);
 
@@ -76,8 +98,7 @@ class UserController extends AbstractController
                         $form->getData()['newPassword']
                     )
                 );
-
-
+                
                 $manager->persist($user);
                 $manager->flush();
 
