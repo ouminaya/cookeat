@@ -32,7 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull()]
     private array $roles = [];
 
-    private ?string  $plainPasseword = null;
+    private ?string  $plainPassword = null;
 
     /**
      * @var string The hashed password
@@ -99,21 +99,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
      /**
-     * Get the value of plainPasseword
+     * Get the value of plainPassword
      */ 
-    public function getPlainPasseword()
+    public function getPlainPassword()
     {
-        return $this->plainPasseword;
+        return $this->plainPassword;
     }
 
     /**
-     * Set the value of plainPasseword
+     * Set the value of plainPassword
      *
      * @return  self
      */ 
-    public function setPlainPasseword($plainPasseword)
+    public function setPlainPassword($plainPassword)
     {
-        $this->plainPasseword = $plainPasseword;
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }
