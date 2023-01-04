@@ -2,12 +2,13 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
+
 use Faker\Factory;
+use App\Entity\User;
 use Faker\Generator;
 use App\Entity\Recipe;
+use App\Entity\Category;
 use App\Entity\Ingredients;
-use App\Entity\User;
 use App\Service\DataFetcherService;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -30,6 +31,27 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+            //User
+            $user = [];
+           
+
+            for ($i = 0; $i < 10; $i++) {
+                $user = new User();
+                $user->setFirstname($this->faker->firstName())
+                    ->setLastname($this->faker->lastName())
+                    ->setEmail($this->faker->email())
+                    ->setRoles(['ROLE_USER']);
+
+                $users[] = $user;
+                $hashPassword = $this->hasher->hashPassword(
+                    $user,
+                    'password'
+                );
+                $users[] = $user;
+                $user->setPassword($hashPassword);
+                $manager->persist($user);
+            }
+        //categorie
         $recipes = $this->fetcher->fetchData();
         $categories = [];
         $categoriesNames = ['entrée', 'plat', 'dessert'];
@@ -41,12 +63,14 @@ class AppFixtures extends Fixture
             $categories[] = $category;
         }
 
+
         //Recipes
 
+        
         foreach ($recipes as $recipeImported) {
-            dd($recipeImported);
-            $recipeImported = $recipeImported[0];
-            // dd($recipeImported);
+            
+            $recipeImported = $recipeImported['recipes'][0];
+            
             $recipe =  new Recipe();
             $recipe->setName($recipeImported['title'])
                 ->setTime($recipeImported['cookingMinutes'])
@@ -54,41 +78,30 @@ class AppFixtures extends Fixture
                 ->setDifficulty($this->faker->numberBetween(1, 5))
                 ->setDescription($recipeImported['instructions'])
                 ->setIsFavorite($this->faker->boolean())
-                ->setCategory($categories[$this->faker->numberBetween(0, 2)]);
+                ->setCategory($categories[$this->faker->numberBetween(0, 2)])
+                ->setUser($users[$this->faker->numberBetween(0, count($users) - 1)]);
+
 
             //Ingredients
+            
             foreach ($recipeImported['extendedIngredients'] as $ingredient) {
-                
+
                 $ingredients = new Ingredients();
                 $ingredients
                     ->setName($ingredient['aisle'])
                     ->setQuantity($ingredient['amount']);
-                $manager->persist($ingredients);
+                    
+               
+                    $manager->persist($ingredients);
                 $recipe->addIngredient($ingredients);
             }
 
             $manager->persist($recipe);
+            $manager->flush();
         }
 
 
-        //User
 
-        for ($i = 0; $i < 10; $i++) {
-            $user = new User();
-            $user->setFirstname($this->faker->firstName())
-                ->setLastname($this->faker->lastName())
-                ->setEmail($this->faker->email())
-                ->setRoles(['ROLE_USER']);
-
-            $hashPassword = $this->hasher->hashPassword(
-                $user,
-                'password'
-            );
-
-            $user->setPassword($hashPassword);
-            $manager->persist($user);
-        }
-
-        $manager->flush();
+       
     }
 }
