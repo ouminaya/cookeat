@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Form\UserType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class UserController extends AbstractController
 {
@@ -17,15 +19,16 @@ class UserController extends AbstractController
 
     /**
      *this controller allow us to edit user's profile
-     * @param User $user
+     * @param User $choosenUser
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @return Response
      */
-
+    #[Security("is_granted('ROLE_USER') and user === choosenUser")]
     #[Route('/utilisateur/edition/{id}', name: 'user.edit', methods: ['GET', 'POST'])]
    
-    public function edit(User $user,
+    public function edit(
+        User $choosenUser,
         Request $request, 
         EntityManagerInterface $manager
      ): Response
@@ -35,11 +38,11 @@ class UserController extends AbstractController
         }
         //si l'utilisateur est connecter revoyer à ses recettes
         
-        if ($this->getUser() !== $user) {
+        if ($this->getUser() !== $choosenUser) {
             return $this->redirectToRoute('recipe.index');
         }
 
-        $form = $this->createForm(UserPasswordType::class, $user);
+        $form = $this->createForm(UserType::class, $choosenUser);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -62,16 +65,17 @@ class UserController extends AbstractController
 
       /** 
      *This controller allow us to edit user's password
-     * @param User $user
+     * @param User $choosenUser
      * @param Request $request
      * @param UserPasswordHasherInterface $hasher
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('/utilisateur/edition-mot-de-passe/{id}', 'user.edit.passeword', methods: ['GET', 'POST'])]
+    #[Security("is_granted('ROLE_USER') and user === choosenUser")]
+    #[Route('/utilisateur/edition-mot-de-passe/{id}', 'user.edit.password', methods: ['GET', 'POST'])]
 
     public function editPassword(
-        User $user,
+        User $choosenUser,
         Request $request,
         UserPasswordHasherInterface $hasher,
         EntityManagerInterface $manager
@@ -82,7 +86,7 @@ class UserController extends AbstractController
         }
         //si l'utilisateur est connecter revoyer à ses recettes
         
-        if ($this->getUser() !== $user) {
+        if ($this->getUser() !== $choosenUser) {
             return $this->redirectToRoute('recipe.index');
         }
 
@@ -91,15 +95,15 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            if ($hasher->isPasswordValid($user, $form->get('plainPassword')->getData())) {
-                $user->setPassword(
+            if ($hasher->isPasswordValid($choosenUser, $form->get('plainPassword')->getData())) {
+                $choosenUser->setPassword(
                     $hasher->hashPassword(
-                        $user,
+                        $$choosenUser,
                         $form->getData()['newPassword']
                     )
                 );
                 
-                $manager->persist($user);
+                $manager->persist($choosenUser);
                 $manager->flush();
 
                 $this->addFlash(
