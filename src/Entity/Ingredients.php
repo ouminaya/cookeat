@@ -25,6 +25,7 @@ class Ingredients
     #[Assert\LessThan(1000, message: 'Veuillez entre un nombre inférieur à 1000')]
     private ?float $quantity = null;
 
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -58,4 +59,6 @@ class Ingredients
     {
         return $this->name;
     }
+
+    
 }
