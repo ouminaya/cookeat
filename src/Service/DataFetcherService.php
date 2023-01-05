@@ -17,7 +17,7 @@ class DataFetcherService
     {
         $content = [];
 
-        for ($i = 0; $i < 2; $i++) { 
+        for ($i = 0; $i < 20; $i++) { 
             $response = $this->client->request(
                 'GET',
                 'https://api.spoonacular.com/recipes/random',
