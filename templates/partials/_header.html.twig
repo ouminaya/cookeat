@@ -1,42 +1,75 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{{ path('home.index') }}">CookEat</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link active" href="{{ path('home.index') }}">Accueil
-              <span class="visually-hidden"></span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{{ path('app_ingredient') }}"> Mes Ingrédients</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="{{ path('recipe.index') }}"> Mes recettes</a>
-          </li>
-          {% if app.user %}
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ path('home.index') }}">CookEat</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarColor01"
+      aria-controls="navbarColor01"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="{{ path('home.index') }}"
+            >Accueil
+            <span class="visually-hidden"></span>
+          </a>
+        </li>
+        <div class="d-flex">
+          <ul class="navbar-nav me-auto">
+            {% if app.user %}
+
+            <li class="nav-item dropdown" style="margin-left: 40rem">
+              <a
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+                >{{ app.user.firstname }}</a
+              >
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="{{ path('user.edit', {id : app.user.id}) }}">Modifier mes informations</a>
+                <a class="dropdown-item" href="{{ path('user.edit.password', {id : app.user.id}) }}">Modifier mon mot de passe</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnextion</a>
+              </div>
+            </li>
+
             <li class="nav-item">
-              <a class="nav-link active" href="{{ path('app_logout') }}">Se déconnecter</a>
+              <a class="nav-link active" href="{{ path('recipe.index') }}">
+                Mes recettes</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ path('app_logout') }}"
+                >Se déconnecter</a
+              >
             </li>
             <li class="nav-item">
               <a class="nav-link active" href="#">Mon compte</a>
             </li>
-          {% else %}
+            {% else %}
             <li class="nav-item">
-              <a class="nav-link active" href="{{ path('app_login') }}">Se connecter</a>
+              <a class="nav-link active" href="{{ path('app_login') }}"
+                >Se connecter</a
+              >
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{{ path('app_register') }}">Créer un compte</a>
+              <a class="nav-link active" href="{{ path('app_register') }}"
+                >Créer un compte</a
+              >
             </li>
-          {% endif %}
-        </ul>
-        <form class="d-flex">
-          <input class="form-control me-sm-2" type="search" placeholder="Search">
-          <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </div>
+            {% endif %}
+          </ul>
+        </div>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
