@@ -29,28 +29,27 @@ class AppFixtures extends Fixture
     }
 
 
-    public function load(ObjectManager $manager): void
-    {
-            //User
-            $user = [];
-           
+    public function load(ObjectManager $manager){
 
-            for ($i = 0; $i < 10; $i++) {
-                $user = new User();
-                $user->setFirstname($this->faker->firstName())
-                    ->setLastname($this->faker->lastName())
-                    ->setEmail($this->faker->email())
-                    ->setRoles(['ROLE_USER']);
+        $users= [];
+        //User
+        for ($i = 0; $i < 10; $i++) {
+            $user = new User();
+            $user->setFirstname($this->faker->firstName())
+                ->setLastname($this->faker->lastName())
+                ->setEmail($this->faker->email())
+                ->setRoles(['ROLE_USER']);
 
-                $users[] = $user;
-                $hashPassword = $this->hasher->hashPassword(
-                    $user,
-                    'password'
-                );
-                $users[] = $user;
-                $user->setPassword($hashPassword);
-                $manager->persist($user);
-            }
+            
+            $hashPassword = $this->hasher->hashPassword(
+                $user,
+                'password'
+            );
+            
+            $user->setPassword($hashPassword);
+            $manager->persist($user);
+            $users[] = $user;
+        }
         //categorie
         $recipes = $this->fetcher->fetchData();
         $categories = [];
@@ -62,14 +61,13 @@ class AppFixtures extends Fixture
             $manager->persist($category);
             $categories[] = $category;
         }
-
-
         //Recipes
-
-        
         foreach ($recipes as $recipeImported) {
+
+            
             
             $recipeImported = $recipeImported['recipes'][0];
+            
             
             $recipe =  new Recipe();
             $recipe->setName($recipeImported['title'])
@@ -82,13 +80,17 @@ class AppFixtures extends Fixture
                 ->setUser($users[$this->faker->numberBetween(0, count($users) - 1)]);
 
 
+                $manager->persist($recipe);
+
+
             //Ingredients
             
             foreach ($recipeImported['extendedIngredients'] as $ingredient) {
 
                 $ingredients = new Ingredients();
                 $ingredients
-                    ->setName($ingredient['aisle'])
+                    //->setid($ingredient('id'))
+                    ->setName($ingredient['name'])
                     ->setQuantity($ingredient['amount']);
                     
                
@@ -96,12 +98,13 @@ class AppFixtures extends Fixture
                 $recipe->addIngredient($ingredients);
             }
 
-            $manager->persist($recipe);
-            $manager->flush();
+            
         }
 
-
+    $manager->flush();
 
        
-    }
+     
+}
+
 }
