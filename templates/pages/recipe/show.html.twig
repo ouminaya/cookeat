@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %} 
+{% block title %}
+CookEat - Recette
+{{ recipe.name }}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    
+    <h1 class="mt-4">
+        {{ recipe.name }}
+    </h1>
+
+    <span class="badge bg-success">Créée le {{ recipe.createAt|date("d/m/Y") }}</span>
+
+    <p class="mt-4">Temps (en minute):
+        {{ recipe.time }}
+    </p>
+
+    <p>Pour 
+        {{ recipe.nbPeople }}
+    </p>
+
+    <p>Difficulté: 
+        {{ recipe.difficulty }}
+    </p>
+    <hr>
+    <p>Ingrédients: </p>
+    {% for ingredient in recipe.ingredients %}
+    <span class="badge bg-success">{{ ingredient.name }}</span>
+    {% endfor %}
+
+    <div class="mt-4">
+        {{ recipe.description |raw }}
+    </div>
+    
+
+
+
+</div>
+{% endblock %}
