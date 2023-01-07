@@ -45,6 +45,9 @@ class Recipe
     #[ORM\Column]
     private ?bool $isFavorite = null;
 
+    #[ORM\Column]
+    private ?bool $isPublic = null;
+
     #[ORM\Column(type:'datetime_immutable')]
     #[Assert\NotNull()]
     private ?DateTimeImmutable $createAt = null;
@@ -63,6 +66,8 @@ class Recipe
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    
 
     public function __construct()
     {
@@ -155,6 +160,18 @@ class Recipe
         return $this;
     }
 
+    public function isIsPublic(): ?bool
+    {
+        return $this->isPublic;
+    }
+
+    public function setIsPublic(bool $isPublic): self
+    {
+        $this->isPublic = $isPublic;
+
+        return $this;
+    }
+
     public function getCreateAt(): ?\DateTimeImmutable
     {
         return $this->createAt;
@@ -228,4 +245,5 @@ class Recipe
 
         return $this;
     }
+
 }

@@ -8,6 +8,7 @@ use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,6 +39,44 @@ class RecipeController extends AbstractController
         );
         return $this->render('pages/recipe/index.html.twig', [
             'recipes' => $recipes,
+        ]);
+    }
+
+
+
+    #[Route('/recette/publique', 'recipe.index.public', methods: ['GET'])]
+    public function indexPublic(
+        RecipeRepository $repository,
+        PaginatorInterface $paginator,
+        Request $request
+    ) : Response
+    {
+        $recipes = $paginator->paginate(
+            $repository->findPublicRecipe(0),
+            $request->query->getInt('page', 1),10
+
+        );
+        return $this->render('pages/recipe/index_public.html.twig', [
+            'recipes' => $recipes,
+        ]);
+    
+        
+    }
+
+    /**
+     *This controller allow us to see a recipe if this one is public
+     *
+     * @param Recipe $recipe
+     * @return Response
+     */
+    #[Security("is_granted('ROLE_USER') and recipe.getisPublic() === true")]
+    #[Route('/recette/{id}','recpie.show', methods: ['GET'])]
+
+    
+    public function show(Recipe $recipe) : Response
+    {
+        return $this->render('pages/recipe/show.html.twig', [
+            'recipe'=>$recipe
         ]);
     }
 

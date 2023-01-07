@@ -76,6 +76,7 @@ class AppFixtures extends Fixture
                 ->setDifficulty($this->faker->numberBetween(1, 5))
                 ->setDescription($recipeImported['instructions'])
                 ->setIsFavorite($this->faker->boolean())
+                ->setIsPublic($this->faker->boolean())
                 ->setCategory($categories[$this->faker->numberBetween(0, 2)])
                 ->setUser($users[$this->faker->numberBetween(0, count($users) - 1)]);
 

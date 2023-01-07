@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %} 
+{% block title %} CookEat - Recettes partager 
+{% endblock %} 
+
+{% block body %}
+
+<div class="container mt-4 ml-4 mb-4">
+  {% if not recipes.items is same as ([]) %}
+
+  <h1>Recettes de la communauté</h1>
+
+  <div class="d-flex justify-content flex-wrap ml-2 mt-4">
+    {% for recipe in recipes %}
+
+    <div class="card" style="width: 18rem">
+      <img
+        class="card-img-top"
+        src=".../100px180/?text=Image cap"
+        alt="Card image cap"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{ recipe.name }}</h5>
+        <p class="card-text">
+            {{ recipe.description|slice(0, 100) - '...' }}
+        </p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Difficulté: {{ recipe.difficulty }}</li>
+        <li class="list-group-item">
+          Nombre de personnes: {{ recipe.nbPeople }}
+        </li>
+        <li class="list-group-item">Temps: {{ recipe.time }}</li>
+      </ul>
+      <div class="card-body">
+        <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">Another link</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <h4>Il n'y a pas de recettes</h4>
+  {% endif %}
+</div>
+{% endblock %}
